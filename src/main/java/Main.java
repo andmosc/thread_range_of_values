@@ -18,7 +18,7 @@ public class Main {
         long startTs = System.currentTimeMillis(); // start time
 
         for (int i = 0; i < SIZE; i++) {
-            futures.add(threadPool.submit(new CaclMaxInterval(generateText("aab", 30_000))));
+            futures.add(threadPool.submit(new CalcMaxInterval(generateText("aab", 30_000))));
         }
 
         int max = 0;
@@ -45,16 +45,16 @@ public class Main {
         }
     }
 
-    public static class CaclMaxInterval implements Callable<Integer> {
+    public static class CalcMaxInterval implements Callable<Integer> {
         private final String text;
         private static int max;
 
-        public CaclMaxInterval(String text) {
+        public CalcMaxInterval(String text) {
             this.text = text;
         }
 
         @Override
-        public Integer call() throws Exception {
+        public Integer call() {
             int maxSize = 0;
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
