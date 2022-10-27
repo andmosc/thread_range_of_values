@@ -34,7 +34,15 @@ public class Main {
         System.out.println("Time: " + (endTs - startTs) + "ms");
 
         System.out.println("Максимальный интервал значений: " + max);
-        threadPool.shutdown();
+
+        //One good way to shut down the ExecutorService (which is also recommended by Oracle)
+        try {
+            if (!threadPool.awaitTermination(100, TimeUnit.MILLISECONDS)) {
+                threadPool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            threadPool.shutdownNow();
+        }
     }
 
     public static class CaclMaxInterval implements Callable<Integer> {
