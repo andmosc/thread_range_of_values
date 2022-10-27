@@ -1,12 +1,16 @@
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.MoreExecutors;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Main {
 
-    private static final int SIZE = 500;
+    private static final int SIZE = 50;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -24,7 +28,9 @@ public class Main {
         int max = 0;
         for (Future<Integer> future : futures) {
             try {
-                max = future.get();
+                int maxSize  = future.get();
+                if (max < maxSize)
+                    max = maxSize;
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             }
@@ -47,7 +53,6 @@ public class Main {
 
     public static class CalcMaxInterval implements Callable<Integer> {
         private final String text;
-        private static int max;
 
         public CalcMaxInterval(String text) {
             this.text = text;
@@ -72,11 +77,9 @@ public class Main {
                         maxSize = j - i;
                     }
                 }
-                if (max < maxSize)
-                    max = maxSize;
             }
             System.out.println(text.substring(0, 100) + " -> " + maxSize);
-            return max;
+            return maxSize;
         }
     }
 
