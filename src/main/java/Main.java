@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main {
 
-    private static final int SIZE = 50;
-
+    private static final int SIZE = 25;
+    private static final int SIZE_STRING = 30_000;
     public static void main(String[] args) throws InterruptedException {
 
         //расчет оптимального пула
@@ -22,7 +22,7 @@ public class Main {
         long startTs = System.currentTimeMillis(); // start time
 
         for (int i = 0; i < SIZE; i++) {
-            futures.add(threadPool.submit(new CalcMaxInterval(generateText("aab", 30_000))));
+            futures.add(threadPool.submit(new CalcMaxInterval(generateText("aab", SIZE_STRING))));
         }
 
         int max = 0;
@@ -61,8 +61,8 @@ public class Main {
         @Override
         public Integer call() {
             int maxSize = 0;
-            for (int i = 0; i < SIZE; i++) {
-                for (int j = 0; j < SIZE; j++) {
+            for (int i = 0; i < SIZE_STRING; i++) {
+                for (int j = 0; j < SIZE_STRING; j++) {
                     if (i >= j) {
                         continue;
                     }
